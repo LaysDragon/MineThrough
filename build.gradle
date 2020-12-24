@@ -14,9 +14,9 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.0'
-group = 'com.yourname.modid' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'modid'
+version = '1.1.1'
+group = 'com.tommysource.minethrough' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'minethrough'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
@@ -86,7 +86,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-            "Specification-Title": "examplemod",
+            "Specification-Title": "minethrough",
             "Specification-Vendor": "examplemodsareus",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
@@ -115,3 +115,30 @@ publishing {
         }
     }
 }
+
+// this part seems missing in latest forge gradle.build,I have no idea why.
+// So I add it back and make a little change to make sure the version and mc version in mcmod.info will replaced
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.mapping_version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.mapping_version
+    }
+
+    // copy everything else except the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+// https://forums.minecraftforge.net/topic/77064-solved-modding-with-intellij-the-asset-problem/ for jetbrain intellij 2020.3
+// or forge loader won't able to locate the build/resource with build/class together.
+// They seem to be recognized as two spectate mod source and cause the game always can't find the mcmod.info.
+// Then caused more problem.
+sourceSets { main { output.resourcesDir = output.classesDir } }

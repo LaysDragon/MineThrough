@@ -35,7 +35,7 @@ public class MineThrough
 {
 	public static final String MODID = "minethrough";
 	public static final String NAME = "MineThrough";
-	public static final String VERSION = "1.1.0";
+	public static final String VERSION = "1.1.1";
 
 	@SidedProxy(clientSide = "com.tommysource.minethrough.ClientProxy", serverSide = "com.tommysource.minethrough.ServerProxy")
 	public static IProxy proxy;
@@ -51,7 +51,7 @@ public class MineThrough
 
 	public static boolean hostOnLoad = false;
 	public static String hostPassword = "";
-	
+
 	public static boolean tryingToConnect = false;
 
 	@EventHandler

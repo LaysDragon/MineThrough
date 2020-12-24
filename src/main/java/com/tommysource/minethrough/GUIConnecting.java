@@ -48,7 +48,7 @@ public class GUIConnecting extends GuiScreen
 				{
 					try
 					{
-						Util.fetchSTUNData(Util.STUN_PORT);
+						Util.fetchSTUNData(ModConfig.stunServer.port);
 					}
 					catch (IOException e)
 					{
